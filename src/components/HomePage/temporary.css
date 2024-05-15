@@ -1,0 +1,17 @@
+
+.carousel-control-next-icon {
+    width: 4rem;
+    height: 4rem;
+    margin-left: 10rem;
+}
+
+.carousel-control-prev-icon {
+    width: 4rem;
+    height: 4rem;
+    margin-right: 10rem;
+}
+
+.carousel-indicators [data-bs-target] {
+    width: 63px;
+    height: 10px;
+}
