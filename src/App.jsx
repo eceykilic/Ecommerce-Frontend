@@ -37,7 +37,7 @@ function App() {
       }
     }
   
-    axios.get('https://workintech-fe-ecommerce.onrender.com/verify', {
+    axios.get('http://localhost:9000/verify', {
       headers: {
         Authorization: storedToken,
       },

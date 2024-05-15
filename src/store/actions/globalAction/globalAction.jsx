@@ -3,7 +3,7 @@ import * as types from './globalActionTypes';
 
 export const updateRoles = () => {
     return (dispatch) => {
-        axios.get("https://workintech-fe-ecommerce.onrender.com/roles")
+        axios.get("http://localhost:9000/roles")
             .then((response) => {
                 dispatch({ type: types.UPDATE_ROLES, payload: response.data });
                 console.log(response)
@@ -16,7 +16,7 @@ export const updateRoles = () => {
 
 export const updateCategories = () => {
     return (dispatch) => {
-        axios.get("https://workintech-fe-ecommerce.onrender.com/categories")
+        axios.get("http://localhost:9000/categories/")
             .then((response) => {
                 dispatch({ type: types.UPDATE_CATEGORIES, payload: response.data });
             })

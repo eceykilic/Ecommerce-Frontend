@@ -7,7 +7,7 @@ export default function BestSeller() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://workintech-fe-ecommerce.onrender.com/products');
+        const response = await fetch('http://localhost:9000/products');
         const data = await response.json();
   
         console.log('Fetched data:', data);

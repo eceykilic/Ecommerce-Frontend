@@ -33,7 +33,7 @@ export const userLogOut = () => {
 export const signUpUser = (userData, history) => (dispatch) => {
     dispatch(userRequest(userData));
     axios
-        .post('https://workintech-fe-ecommerce.onrender.com/signup', userData)
+        .post('http://localhost:9000/signup', userData)
         .then((response) => {
             dispatch(userSuccess(response.data));
             console.log("Sign up has been successfully");
@@ -50,7 +50,7 @@ export const signUpUser = (userData, history) => (dispatch) => {
 export const loginUser = (userData, history, setToken) => (dispatch) => {
     dispatch(userRequest(userData));
     axios
-        .post('https://workintech-fe-ecommerce.onrender.com/login', userData)
+        .post('http://localhost:9000/login', userData)
         .then((response) => {
             dispatch(userSuccess(response.data));
             setToken(response.data.token);

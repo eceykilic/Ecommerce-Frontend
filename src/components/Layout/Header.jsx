@@ -254,7 +254,7 @@ const manCategories = categories.filter((category) =>
             <div className="flex items-center text-navBlue">
               {Object.keys(user).length > 1 ? (
                 <div className="flex items-center gap-3 cursor-pointer">
-                  <Gravatar userEmail={user.email} />
+                  <Gravatar userEmail="example@example.com" />
                   <div className="">
                     <div className="flex items-center">
                       <span>{user.name}</span>
