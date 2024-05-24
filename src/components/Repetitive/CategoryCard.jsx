@@ -11,7 +11,7 @@ export default function CategoryCard() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost:9000/categories/");
+        const response = await fetch("http://localhost:9000/category/");
         const data = await response.json();
   
         // Extract gender category from the URL path

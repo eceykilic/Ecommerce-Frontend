@@ -27,30 +27,34 @@ const fetchProductsFailure = (error) => ({
 
 const fetchProducts = (params) => {
     return (dispatch) => {
-    dispatch(fetchProductsRequest());
-    instanceAxios
-        .get("/products", {params})
-        .then((response) => {
-            dispatch(fetchProductsSuccess(response.data.products,response.data.total));
-        })
-        .catch((error) => {
-            dispatch(fetchProductsFailure(error.message));
-        })
+        dispatch(fetchProductsRequest());
+        instanceAxios
+            .get("/products/", {params})
+            .then((response) => {
+                const { products, total } = response.data; // Destructure response data
+                dispatch(fetchProductsSuccess(products, total)); // Pass products and total as payload
+            })
+            .catch((error) => {
+                dispatch(fetchProductsFailure(error.message));
+            })
     }
 }
+
 const addMoreProducts = (params) => {
     return (dispatch) => {
-    dispatch(fetchProductsRequest());
-    instanceAxios
-        .get("/products", {params})
-        .then((response) => {
-            dispatch(fetchMoreProducts(response.data.products,response.data.total));
-        })
-        .catch((error) => {
-            dispatch(fetchProductsFailure(error.message));
-        })
+        dispatch(fetchProductsRequest());
+        instanceAxios
+            .get("/products/", {params})
+            .then((response) => {
+                const { products, total } = response.data; // Destructure response data
+                dispatch(fetchMoreProducts(products, total)); // Pass products and total as payload
+            })
+            .catch((error) => {
+                dispatch(fetchProductsFailure(error.message));
+            })
     }
 }
+
 
 
 export {

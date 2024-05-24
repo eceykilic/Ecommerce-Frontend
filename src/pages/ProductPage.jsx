@@ -28,7 +28,7 @@ export default function ProductPage() {
   const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(false);
   const [product, setProduct] = useState({ images: [] });
-  const requestURL = `/products/${productId}`;
+  const requestURL = `products/${productId}`;
  
  
   

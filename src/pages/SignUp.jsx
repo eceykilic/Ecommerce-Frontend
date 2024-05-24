@@ -9,13 +9,18 @@ import {
   userSuccess,
   userFailure,
 } from "../store/actions/userAction/userAction";
-import { updateRoles } from "../store/actions/globalAction/globalAction"
+import { updateRoles } from "../store/actions/globalAction/globalAction";
 
 const SignUp = () => {
   const dispatch = useDispatch();
-  const roles = useSelector(state => state.global.roles);
+  const roles = useSelector((state) => state.global.roles);
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit, watch, formState: { errors, isValid } } = useForm({ mode: "onBlur" });
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isValid },
+  } = useForm({ mode: "onBlur" });
   const history = useHistory();
 
   useEffect(() => {
@@ -241,10 +246,10 @@ const SignUp = () => {
                 </option>
                 {roles &&
                   roles.map(
-                    (role) =>
+                    (role, index) =>
                       role.code !== "customer" && (
                         <option
-                          key={role.id}
+                          key={index}
                           value={role.code}
                           className="bg-white"
                         >

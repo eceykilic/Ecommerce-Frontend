@@ -3,31 +3,49 @@ import React, { useEffect, useState } from 'react';
 
 export default function BestSeller() {
   const [bestSellerProducts, setBestSellerProducts] = useState([]);
+  const [error, setError] = useState(null); // Hataları yönetmek için state ekleme
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:9000/products');
+        const response = await fetch('http://localhost:9000/products/', {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
-  
+
         console.log('Fetched data:', data);
-  
+
         // Assuming the API returns an array of products
         // Directly set the state with the fetched data
         setBestSellerProducts(data.products);
-  
+
       } catch (error) {
         console.error('Error fetching data:', error);
+        setError(error); // Hataları state'e set edin
       }
     };
-  
+
     // Fetch data when the component mounts
     fetchData();
   }, []);
-  
-  const productCards = bestSellerProducts.sort((a, b) => b.sell_count - a.sell_count).slice(0, 8).map((item, index) => {
-        return <ProductCard data={item} key={index} className="w-[25%]" />
-    })
+
+  if (error) {
+    return <div>Error: {error.message}</div>; // Hata mesajını göster
+  }
+
+  const productCards = bestSellerProducts
+    .sort((a, b) => b.sell_count - a.sell_count)
+    .slice(0, 8)
+    .map((item, index) => {
+      return <ProductCard data={item} key={index} className="w-[25%]" />;
+    });
 
   return (
     <div>
@@ -38,7 +56,7 @@ export default function BestSeller() {
           Problems trying to resolve the conflict between
         </p>
         <div className="flex flex-wrap justify-center items-center gap-7 max-sm:flex-col">
-            {productCards}
+          {productCards}
         </div>
       </div>
     </div>

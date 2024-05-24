@@ -3,73 +3,63 @@ import * as types from './userActionTypes';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const userRequest = (userData) => {
-    return {
-        type: types.USER_REQUEST,
-        payload: userData,
-    };
-};
+export const userRequest = (userData) => ({
+    type: types.USER_REQUEST,
+    payload: userData,
+});
 
-export const userSuccess = (response) => {
-    return {
-        type: types.USER_SUCCESS,
-        payload: response,
-    };
-};
+export const userSuccess = (response) => ({
+    type: types.USER_SUCCESS,
+    payload: response,
+});
 
-export const userFailure = (error) => {
-    return {
-        type: types.USER_FAILURE,
-        payload: error,
-    };
-};
+export const userFailure = (error) => ({
+    type: types.USER_FAILURE,
+    payload: error,
+});
 
-export const userLogOut = () => {
-    return {
-        type: types.USER_LOG_OUT
-    }
-} 
+export const userLogOut = () => ({
+    type: types.USER_LOG_OUT,
+});
 
 export const signUpUser = (userData, history) => (dispatch) => {
     dispatch(userRequest(userData));
-    axios
-        .post('http://localhost:9000/signup', userData)
+    axios.post('http://localhost:9000/user/signup', userData)
         .then((response) => {
             dispatch(userSuccess(response.data));
-            console.log("Sign up has been successfully");
-            toast.success("Sign up successful! Check your email to activate your account.");
+            toast.success("Kayıt başarılı! Hesabınızı etkinleştirmek için e-postanızı kontrol edin.");
             setTimeout(() => {
                 history.goBack();
-              }, 5000);
+            }, 5000);
         }).catch((error) => {
-            dispatch(userFailure(error))
-            console.error("Sign up has been failed", error);
-        })
+            dispatch(userFailure(error.message));
+            console.error("Kayıt başarısız oldu", error);
+            toast.error("Kayıt başarısız oldu. Lütfen tekrar deneyin.");
+        });
 };
 
-export const loginUser = (userData, history, setToken) => (dispatch) => {
-    dispatch(userRequest(userData));
-    axios
-        .post('http://localhost:9000/login', userData)
+export const loginUser = (data, history) => {
+    return (dispatch) => {
+      axios.post("http://localhost:9000/user/login", data)
         .then((response) => {
-            dispatch(userSuccess(response.data));
-            setToken(response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data));
-            
-            console.log("Login has been successfully");
-            history.push("/");
-            toast.success("Sign in successful! Hoşgeldin.")
-        }).catch((error) => {
-            dispatch(userFailure(error))
-            console.error("Login has been failed", error);
-            toast.error("Sign in error! Yeniden dene.")
-           
+          console.log(response.data);
+          localStorage.setItem("token", response.data.token);
+          dispatch(userSuccess(response.data)); // Başarılı giriş olduğunda userSuccess eylemini gönder
+          toast.success("Hoşgeldiniz");
+          history.push("/");
         })
-};
+        .catch((error) => {
+          console.error("Error:", error);
+          console.log("Server response:", error.response);
+          dispatch(userFailure(error.message)); // Hata durumunda userFailure eylemini gönder
+          toast.error("Error occurred: " + error.response.data.message);
+        });
+    };
+  };
 
-export const logOutUser = (history) => (dispatch) => {
+  export const logOutUser = (history) => (dispatch) => {
     dispatch(userLogOut());
-    localStorage.removeItem('user');
-    console.log("Log out has been successfully");
-    toast.success("Log out successful")
+    localStorage.removeItem('token'); // Remove token from local storage
+    history.push("/");
+    toast.success("Çıkış başarılı");
 };

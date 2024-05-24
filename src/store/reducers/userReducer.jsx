@@ -4,7 +4,7 @@ const storedUser = localStorage.getItem('user');
 const initialState = {
     isLoading: false,
     error: null,
-    response:storedUser ? JSON.parse(storedUser) : {},
+    response: storedUser ? JSON.parse(storedUser) : {},
     userData: {},
 };
 
@@ -14,15 +14,26 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: true,
-                userData:action.payload,
+                userData: action.payload,
                 error: null,
             };
         case types.USER_SUCCESS:
+            // Yanıtın JSON formatında olup olmadığını kontrol edelim
+            let response;
+            try {
+                response = typeof action.payload === 'string' ? JSON.parse(action.payload) : action.payload;
+            } catch (e) {
+                return {
+                    ...state,
+                    isLoading: false,
+                    error: 'Invalid response format',
+                };
+            }
             return {
                 ...state,
                 isLoading: false,
-                response: action.payload,
-                error:null,
+                response,
+                error: null,
             };
         case types.USER_FAILURE:
             return {
@@ -32,11 +43,11 @@ const userReducer = (state = initialState, action) => {
             };
         case types.USER_LOG_OUT:
             return {
-                isLoading:false,
-                error:null,
-                response:{},
-                userData:{},
-            }
+                isLoading: false,
+                error: null,
+                response: {},
+                userData: {},
+            };
         default:
             return state;
     }
