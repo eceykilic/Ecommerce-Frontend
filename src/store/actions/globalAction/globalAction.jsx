@@ -16,7 +16,7 @@ export const updateRoles = () => {
 
 export const updateCategories = () => {
     return (dispatch) => {
-        axios.get("http://localhost:9000/categories/")
+        axios.get("http://localhost:9000/category/")
             .then((response) => {
                 dispatch({ type: types.UPDATE_CATEGORIES, payload: response.data });
             })
